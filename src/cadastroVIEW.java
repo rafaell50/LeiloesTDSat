@@ -1,8 +1,10 @@
+
+import javax.swing.JOptionPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author Adm
@@ -135,26 +137,47 @@ public class cadastroVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cadastroNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastroNomeActionPerformed
-        
-        
+
+
     }//GEN-LAST:event_cadastroNomeActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        int resposta;
+        boolean statusConexao;
+
         ProdutosDTO produto = new ProdutosDTO();
         String nome = cadastroNome.getText();
         String valor = cadastroValor.getText();
         String status = "A Venda";
         produto.setNome(nome);
-        produto.setValor(Integer.parseInt(valor));
+        produto.setValor(Long.parseLong(valor));
         produto.setStatus(status);
-        
-        ProdutosDAO produtodao = new ProdutosDAO();
-        produtodao.cadastrarProduto(produto);
-        
+
+        ProdutosDAO produtoDAO = new ProdutosDAO();
+
+        statusConexao = produtoDAO.conectar();
+        if (statusConexao == false) {
+            JOptionPane.showMessageDialog(null, "Erro de conexão");
+        } else {
+
+            resposta = produtoDAO.cadastrarProduto(produto);
+
+            if (resposta == 1) {
+                JOptionPane.showMessageDialog(null, "Dados incluidos com sucesso");
+
+            } else if (resposta == 1062) {
+                JOptionPane.showMessageDialog(null, "Produto já foi cadastrada");
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro ao tentar inserir dados");
+            }
+
+        }
+        produtoDAO.desconectar();
+
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed
-        listagemVIEW listagem = new listagemVIEW(); 
+        listagemVIEW listagem = new listagemVIEW();
         listagem.setVisible(true);
     }//GEN-LAST:event_btnProdutosActionPerformed
 
