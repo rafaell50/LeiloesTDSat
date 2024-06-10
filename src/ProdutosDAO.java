@@ -57,6 +57,26 @@ public class ProdutosDAO {
         }
 
     }
+    
+    public int venderProduto(ProdutosDTO produto) {
+        
+        int resposta;
+        String sql = "UPDATE produtos SET status = 'Vendido' WHERE id = ?";
+
+        try {
+
+            PreparedStatement st = conn.prepareStatement(sql);
+            
+            st.setLong(1, produto.getId());
+            resposta = st.executeUpdate();
+
+            return resposta;
+        } catch (SQLException ex) {
+
+            System.out.println("Erro ao conectar " + ex.getMessage());
+            return ex.getErrorCode();
+        }
+    }
 
     public ArrayList<ProdutosDTO> listarProdutos() {
 
