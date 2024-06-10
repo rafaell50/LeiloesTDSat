@@ -106,6 +106,35 @@ public class ProdutosDAO {
             return null;
         }
     }
+    
+    public ArrayList<ProdutosDTO> listarProdutosVendidos() {
+
+        String sql = "SELECT * FROM uc_11.produtos WHERE status = 'Vendido'";
+
+        try {
+
+            PreparedStatement st = conn.prepareStatement(sql);
+            ResultSet resultset = st.executeQuery();
+
+            while (resultset.next()) {
+
+                ProdutosDTO produto = new ProdutosDTO();
+                produto.setId(resultset.getLong("id"));
+                produto.setNome(resultset.getString("nome"));
+                produto.setValor(resultset.getLong("valor"));
+                produto.setStatus(resultset.getString("status"));
+
+                listagem.add(produto);
+            }
+            return listagem;
+
+        } catch (SQLException ex) {
+
+            System.out.println("erro: " + ex.getMessage());
+            System.out.println(ex.getErrorCode());
+            return null;
+        }
+    }
 
     public void desconectar() {
         if (this.conn != null) {
