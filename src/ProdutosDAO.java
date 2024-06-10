@@ -58,7 +58,7 @@ public class ProdutosDAO {
 
     }
     
-    public int venderProduto(ProdutosDTO produto) {
+    public int venderProduto(Long idProduto) {
         
         int resposta;
         String sql = "UPDATE produtos SET status = 'Vendido' WHERE id = ?";
@@ -67,7 +67,7 @@ public class ProdutosDAO {
 
             PreparedStatement st = conn.prepareStatement(sql);
             
-            st.setLong(1, produto.getId());
+            st.setLong(1, idProduto);
             resposta = st.executeUpdate();
 
             return resposta;
